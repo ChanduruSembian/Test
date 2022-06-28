@@ -1,0 +1,27 @@
+LabelNames = ['Label1', 'Label2', 'Label3']
+elist = {}
+elabel = {}
+
+i = 1
+x = 10
+y = 15
+Entry_Values = ['Value1', 'Value2']
+Entry_msg = 'This typed text is not available in the list, please check!'
+
+for name in LabelNames:
+    lb = Label(Can1, text=name,width=28,height=2,fg="#054457", bg="white",font=("Calibri",10,"bold"),wraplength=200,anchor='ne')
+    lb.place(x=x, y=y)
+    elabel[name] = lb
+
+    e = AutocompleteCombobox(Can1, font=("Calibri",10,"bold"), width=10, completevalues=Entry_Values)
+    e.place(x=x+230, y=y+5)
+    elist[name] = e
+        
+    i += 1
+    y = y + 55
+    if i == 8:
+        x = x + 360
+        y = 15
+    else:
+        x = x
+        y = y
