@@ -40,3 +40,6 @@ while True:
         # user_data has possible any data
         
 print(f'Read {read_count} records')
+
+### Below is the link to understand the xml files
+### https://answers.microsoft.com/en-us/windows/forum/all/custom-built-problem/be018edf-0da4-44f7-aef0-fafcc33897fc
