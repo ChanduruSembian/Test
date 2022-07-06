@@ -1,0 +1,42 @@
+import win32evtlog
+import xml.etree.ElementTree as ET
+
+# open event file
+query_handle = win32evtlog.EvtQuery(
+    '—filepath--',
+    win32evtlog.EvtQueryFilePath)
+
+read_count = 0
+intloop = 0 
+while True:
+    
+    # read 100 records
+    events = win32evtlog.EvtNext(query_handle, 100)
+    read_count += len(events)
+    # if there is no record break the loop
+    if len(events) == 0:
+        break
+    for event in events:
+        intloop+=1
+        xml_content = win32evtlog.EvtRender(event, win32evtlog.EvtRenderEventXml)
+        print(xml_content)
+
+        # parse xml content
+        xml = ET.fromstring(xml_content)
+        
+        # xml namespace, root element has a xmlns definition, so we have to use the namespace
+        ns = '{http://schemas.microsoft.com/win/2004/08/events/event}'
+
+        event_id = xml.find(f'.//{ns}EventID').text
+        level = xml.find(f'.//{ns}Level').text
+        channel = xml.find(f'.//{ns}Channel').text
+        execution = xml.find(f'.//{ns}Execution')
+        process_id = execution.get('ProcessID')
+        thread_id = execution.get('ThreadID')
+        time_created = xml.find(f'.//{ns}TimeCreated').get('SystemTime')
+        print(f'Time: {time_created}, Level: {level} Event Id: {event_id}, Channel: {channel}, Process Id: {process_id}, Thread Id: {thread_id}')
+        
+        user_data = xml.find(f'.//{ns}UserData')
+        # user_data has possible any data
+        
+print(f'Read {read_count} records')
